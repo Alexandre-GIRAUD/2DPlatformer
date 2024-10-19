@@ -15,6 +15,8 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+import utils.LoadSave;
+
 public class Player extends Entity{
 
 	private BufferedImage[][] animations;
@@ -24,8 +26,8 @@ public class Player extends Entity{
 	private boolean left,up,right,down;
 	private float playerSpeed = 2.0f;
 	
-	public Player(float x, float y) {
-		super(x, y);
+	public Player(float x, float y, int width, int height) {
+		super(x, y, width, height);
 		loadAnimations();
 	}
 	
@@ -37,7 +39,7 @@ public class Player extends Entity{
 	
 	public void render(Graphics g) {
 		
-		g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, 256, 160, null);
+		g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, width, height, null);
 	
 	}
 	
@@ -101,26 +103,15 @@ public class Player extends Entity{
 		
 	
 	private void loadAnimations() {
-		InputStream is = getClass().getResourceAsStream("/player_sprites.png");
-	    
-		try {
-			BufferedImage img = ImageIO.read(is);
-			animations = new BufferedImage[9][6];
+
+			BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
 			
+			animations = new BufferedImage[9][6];
 			for(int j = 0; j <animations.length; j++) {
 				for(int i = 0; i < animations[j].length; i++) {
 					animations[j][i] = img.getSubimage(i*64, j * 40, 64, 40);
 				}
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				is.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 		
 	}
 	

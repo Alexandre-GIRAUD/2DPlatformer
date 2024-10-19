@@ -15,6 +15,8 @@ import java.io.InputStream;
 
 import static utils.Constants.PlayerConstants.*;
 import static utils.Constants.Directions.*;
+import static main.Game.GAME_HEIGHT;
+import static main.Game.GAME_WIDTH;
 
 public class GamePanel extends JPanel {
 	
@@ -34,7 +36,7 @@ public class GamePanel extends JPanel {
 	}
 	
 	public void setPanelSize() {
-		Dimension size = new Dimension(1280,800);
+		Dimension size = new Dimension(GAME_WIDTH,GAME_HEIGHT);
 		setPreferredSize(size);
 	}
 	
