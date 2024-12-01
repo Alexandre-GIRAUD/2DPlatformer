@@ -19,13 +19,13 @@ public class Playing extends State implements Statemethods {
 	private Player player;
 	private LevelManager levelManager;
 	private PauseOverlay pauseOverlay;
-	private boolean paused = true;
+	private boolean paused = false;
 	
 	private void initClasses() {
 		levelManager = new LevelManager(game);
 		player = new Player(200,200, (int) (64* Game.SCALE), (int) (40* Game.SCALE));
 		player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
-		pauseOverlay = new PauseOverlay();
+		pauseOverlay = new PauseOverlay(this);
 	}
 
 	public void windowFocusLost() {
@@ -38,10 +38,12 @@ public class Playing extends State implements Statemethods {
 
 	@Override
 	public void update() {
-		levelManager.update();
-		player.update();
-		
-		pauseOverlay.update();
+		if (!paused) {
+			levelManager.update();
+			player.update();
+		}
+		else 
+			pauseOverlay.update();
 		
 	}
 
@@ -50,7 +52,8 @@ public class Playing extends State implements Statemethods {
 		levelManager.draw(g);
 		player.render(g);
 		
-		pauseOverlay.draw(g);
+		if (paused)
+			pauseOverlay.draw(g);
 	}
 
 	@Override
@@ -65,6 +68,11 @@ public class Playing extends State implements Statemethods {
 		if (paused)
 			pauseOverlay.mouseReleased(e);
 
+	}
+	
+	public void mouseDragged(MouseEvent e) {
+		if (paused)
+			pauseOverlay.mouseDragged(e);
 	}
 
 	@Override
@@ -92,7 +100,8 @@ public class Playing extends State implements Statemethods {
 			player.setJump(true);
 			break;
 		case KeyEvent.VK_ESCAPE:
-			Gamestate.state = Gamestate.MENU;
+			paused = !paused;
+			break;
 		}
 		
 	}
@@ -111,5 +120,9 @@ public class Playing extends State implements Statemethods {
 			break;
 		}
 		
+	}
+	
+	public void unpauseGame() {
+		paused = false;
 	}
 }
