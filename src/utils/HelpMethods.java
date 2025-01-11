@@ -72,4 +72,9 @@ public class HelpMethods {
 				return false;
 		return true;
 	}
+	public static boolean IsFloor(Rectangle2D.Float hitbox, float xSpeed, int[][] lvlData) {
+		// we check the tile below the enemy
+		return IsSolid(hitbox.x + xSpeed, hitbox.y + hitbox.height + 1, lvlData);
+	}
+	
 }
